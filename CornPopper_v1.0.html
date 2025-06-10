@@ -1,0 +1,716 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+
+  
+  
+
+  
+  
+  
+
+  
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+
+  
+    
+      <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+  
+    
+      <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    
+  
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+    
+  
+
+  <style type="text/css">
+    body {
+  background-color: lightgray;
+  font-family: Consolas, monaco, monospace;
+}
+h1, h2 {
+  text-align: center;
+}
+table {
+  //border: 2px solid black;
+  width:100%;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+td, th {
+  padding-bottom: 5px;
+}
+th {
+  text-align:center;
+}
+.disabled {
+  color: red;
+  pointer-events: none;
+  background-color: dimgray;
+}
+
+#container {
+ position: relative;
+ overflow:auto;
+ min-width:1000px;
+}
+
+#upgradecontainer {
+  width:30%;
+  float:right;
+  min-width: 300px;
+  padding: 5px;
+  padding-bottom: 20px;
+  }
+  
+
+#mainbox {
+  margin-right:30%;
+  margin-left:250px;
+  background-color: lightgray;
+  height: auto;
+  padding:20px;
+  min-width:500px;
+}
+
+#popper {
+  width:200px;
+  height:200px;
+  margin: auto;
+}
+
+#recruit-hobo {
+  width:150px;
+  margin:25px;
+  border-radius:100px;
+  border-color: transparent;
+  box-shadow: none;
+  background-color: transparent;
+}
+#popper:hover{
+  background: radial-gradient(ellipse at center, rgba(255,255,255,1) 0%,rgba(255,255,255,0.94) 4%,rgba(255,255,255,0) 70%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+#recruit-hobo:active {
+  transform: translateY(4px);
+}
+
+#order-pop{
+
+}
+
+.buyable:hover {
+  background-color: white;
+  cursor: pointer;
+}
+
+.buyable:active {
+  transform: translateY(4px);
+}
+.desc {
+  font-size: 5px;
+  line-height:1.0;
+}
+.buyable{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+   font-size: 10px;
+   padding: 2px;
+   overflow:auto;
+   border-radius: 10px;
+   background-color: beige;
+   border: #afa481 2px solid;
+
+}
+.upgimgs {
+  width:50px; 
+  float:left;
+  margin-right:4px;
+}
+
+#tally {
+  float:left;
+  width: 250px;
+  padding-left: 10px;
+  padding-bottom: 20px;
+  border-radius: 0px 0px 50px 0px;
+  background-color: beige;
+  border: #afa481 2px solid;
+}
+
+#eldergod{
+  display:none;
+  width:90%px;
+  margin: auto;
+  top:0px;
+  
+}
+  </style>
+
+  <title>Hobos Without Borders</title>
+
+  
+    
+
+
+
+
+<script type='text/javascript'>//<![CDATA[
+$(window).load(function(){
+// Basic variable declaration - keep track of how many of each
+// item we currently own, and how much the new ones should cost.
+var numHobos = 0;
+var HobosPerSecond = 0;
+var azamonStatus = 2;
+var azamonspots = 0;
+
+var numRecruiters = 0;
+var numShacks = 0;
+var numFurnaces = 0;
+var numHallways = 0;
+var numGeothermals = 0;
+var numSatellites = 0;
+var numFrankens = 0;
+var numStones = 0;
+var numCopias = 0;
+var numFavor = 1;
+
+var RecruiterCost = 15;
+var ShackCost = 100;
+var FurnaceCost = 500;
+var HallwayCost = 2000;
+var GeothermalCost = 7000;
+var SatelliteCost = 50000;
+var FrankenCost = 400000;
+var StoneCost = 1000000;
+var CopiaCost = 150000000;
+var favorCost = 666000000;
+var FavorBonus = 10;
+
+var progress = 0;
+
+var save = document.getElementById('save');
+var load = document.getElementById('load');
+
+function savegame () {
+	var save = {
+
+	pops: numHobos,	
+    recruiters: numRecruiters,
+	shacks: numShacks,
+	furnaces: numFurnaces,
+	hallways: numHallways,
+	geothermals: numGeothermals,
+	satellites: numSatellites,
+	frankens: numFrankens,
+	stones: numStones,
+	copias: numCopias,
+	favor: numFavor,
+
+	RecruitC: RecruiterCost,
+	ShackC: ShackCost,
+	FurnaceC: FurnaceCost,
+	HallwayC: HallwayCost,
+	GeothermalC: GeothermalCost,
+	SatelliteC: SatelliteCost,
+	FrankenC: FrankenCost,
+	StoneC: StoneCost,
+	CopiaC: CopiaCost,
+	favorC: favorCost
+		
+}
+
+localStorage.setItem("save",JSON.stringify(save));
+}
+
+function loadgame (){
+var savegame = JSON.parse(localStorage.getItem("save"));
+
+if (typeof savegame.pops !== "undefined") numHobos = savegame.pops;
+if (typeof savegame.recruiters !== "undefined") numRecruiters = savegame.recruiters;
+if (typeof savegame.shacks !== "undefined") numShacks = savegame.shacks;
+if (typeof savegame.furnaces !== "undefined") numFurnaces = savegame.furnaces;
+if (typeof savegame.hallways !== "undefined") numHallways = savegame.hallways;
+if (typeof savegame.geothermals !== "undefined") numGeothermals = savegame.geothermals;
+if (typeof savegame.satellites !== "undefined") numSatellites = savegame.satellites;
+if (typeof savegame.frankens !== "undefined") numFrankens = savegame.frankens;
+if (typeof savegame.stones !== "undefined") numStones = savegame.stones;
+if (typeof savegame.copias !== "undefined") numCopias = savegame.copias;
+if (typeof savegame.favor !== "undefined") numFavor = savegame.favor;
+
+if (typeof savegame.RecruitC !== "undefined") RecruiterCost = savegame.RecruitC;
+if (typeof savegame.ShackC !== "undefined") ShackCost = savegame.ShackC;
+if (typeof savegame.FurnaceC !== "undefined") FurnaceCost = savegame.FurnaceC;
+if (typeof savegame.HallwayC !== "undefined") HallwayCost = savegame.HallwayC;
+if (typeof savegame.GeothermalC !== "undefined") GeothermalCost = savegame.GeothermalC;
+if (typeof savegame.SatelliteC !== "undefined") SatelliteCost = savegame.SatelliteC;
+if (typeof savegame.FrankenC !== "undefined") FrankenCost = savegame.FrankenC;
+if (typeof savegame.StoneC !== "undefined") StoneCost = savegame.StoneC;
+if (typeof savegame.CopiaC !== "undefined") CopiaCost = savegame.CopiaC;
+if (typeof savegame.favorC !== "undefined") favorCost = savegame.favorC;
+}
+
+updateScreen();
+
+save.addEventListener('click', function() {
+  savegame();
+});
+
+load.addEventListener('click', function() {
+  loadgame();
+});
+
+// Increase amount of hobos every time "Recruit a Hobo" is pressed
+$('#recruit-hobo').on('click', function() {
+  numHobos += 10;
+  updateScreen();
+});
+
+// Same for Recruiter
+$('#order-pop').on('click', function() {
+  numRecruiters++;
+  azamonspots++;
+
+  // Deduct cost
+  numHobos -= RecruiterCost;
+
+  // Increase cost for the next one, using Math.ceil() to round up
+  RecruiterCost = Math.ceil(RecruiterCost * 1.1);
+
+  calcWidget();
+});
+
+$('#pop-chefs').on('click', function() {
+  numShacks++;
+  azamonspots++;
+  numHobos -= ShackCost;
+  ShackCost = Math.ceil(ShackCost * 1.1);
+  calcWidget();
+});
+
+$('#pop-furnace').on('click', function() {
+  numFurnaces++;
+  azamonspots++;
+  numHobos -= FurnaceCost;
+  FurnaceCost = Math.ceil(FurnaceCost * 1.1);
+  calcWidget();
+});
+
+$('#micro-hall').on('click', function() {
+  numHallways++;
+  azamonspots++;
+  numHobos -= HallwayCost;
+  HallwayCost = Math.ceil(HallwayCost * 1.1);
+  calcWidget();
+});
+
+$('#geothermal-pop').on('click', function() {
+  numGeothermals++;
+  azamonspots++;
+  numHobos -= GeothermalCost;
+  GeothermalCost = Math.ceil(GeothermalCost * 1.1);
+  calcWidget();
+});
+
+$('#pop-satellite').on('click', function() {
+  numSatellites++;
+  azamonspots++;
+  numHobos -= SatelliteCost;
+  SatelliteCost = Math.ceil(SatelliteCost * 1.1);
+  calcWidget();
+});
+
+$('#franken-corn').on('click', function() {
+  numFrankens++;
+  azamonspots++;
+  numHobos -= FrankenCost;
+  FrankenCost = Math.ceil(FrankenCost * 1.3);
+  calcWidget();
+});
+
+$('#pop-stone').on('click', function() {
+  numStones++;
+  azamonspots++;
+  numHobos -= StoneCost;
+  StoneCost = Math.ceil(StoneCost * 1.3);
+  calcWidget();
+});
+
+$('#popcornucopia').on('click', function() {
+  numCopias++;
+  azamonspots++;
+  numHobos -= CopiaCost;
+  CopiaCost = Math.ceil(CopiaCost * 1.3);
+  calcWidget();
+});
+
+$('#eldergod').on('click', function() {
+  numFavor += 0.1;
+  favorCost = favorCost * 1.5
+  numRecruiters = 0;
+	numShacks = 0;
+	numFurnaces = 0;
+	numHallways = 0;
+	numGeothermals = 0;
+	numSatellites = 0;
+	numFrankens = 0;
+	numStones = 0;
+	numCopias = 0;
+  RecruiterCost = 15;
+ ShackCost = 100;
+ FurnaceCost = 500;
+ HallwayCost = 2000;
+ GeothermalCost = 7000;
+ SatelliteCost = 50000;
+ FrankenCost = 400000;
+ StoneCost = 1000000;
+ CopiaCost = 150000000;
+ numHobos = 0;
+ azamonspots = 0;
+  calcWidget();
+});
+
+
+function prettify(input){
+    var output = Math.round(input * 1000000)/1000000;
+	return output;
+}
+
+//Calculates income per second 
+function calcWidget() {
+	var RecruiterInc = numRecruiters * 1;
+  var ShackInc = numShacks * 4;
+	var FurnacesInc = numFurnaces * 10;
+	var HallwaysInc = numHallways * 20;
+	var GeothermalsInc = numGeothermals * 100;
+	var SatellitesInc = numSatellites * 1200;
+	var FrankencornsInc = numFrankens * 25000;
+	var StonesInc = numStones * 56000;
+	var CopiaInc = numCopias * 145000;
+	var AllInc = ShackInc + FurnacesInc + HallwaysInc + GeothermalsInc + SatellitesInc + FrankencornsInc + StonesInc + CopiaInc;
+  
+  //var azamonspots = numRecruiters + numShacks + numFurnaces + numHallways + numGeothermals + numSatellites + numFrankens + numStones + numCopias;
+	//var favorbonus = AllInc * numFavor;
+
+  //HobosPerSecond = ShackInc + FurnacesInc + HallwaysInc + GeothermalsInc + SatellitesInc + FrankencornsInc + StonesInc + CopiaInc;
+  HobosPerSecond = AllInc * numFavor;
+  updateScreen();
+}
+
+
+//If statements used to unlock features based on a reached milestone 
+
+function displayUpgrades() {
+
+  if (numRecruiters >= 1)
+    $("#sneaky").slideDown("slow");
+
+  if (numCopias > 1)
+    $("#eldergod").slideDown("slow");
+
+
+
+}
+
+function abbreviateNumber(num, digits) {
+  var si = [
+    { value: 1E18, symbol: "Exagrams" },
+    { value: 1E15, symbol: "Petagrams" },
+    { value: 1E12, symbol: "Teragrams" },
+    { value: 1E9,  symbol: "Gigagrams" },
+    { value: 1E6,  symbol: "t" },
+    { value: 1E3,  symbol: "kg" }
+  ], rx = /\.0+$|(\.[0-9]*[1-9])0+$/, i;
+  for (i = 0; i < si.length; i++) {
+    if (num >= si[i].value) {
+      return (num / si[i].value).toFixed(digits).replace(rx, "$1") + si[i].symbol;
+    }
+  }
+  return num.toFixed(digits).replace(rx, "$1");
+}
+
+function updateScreen() {
+  // Update the text showing totals
+  //$('#hobo-count').text(Math.floor(numHobos));
+ // $('#hobo-count').text(stringHobo);
+  //document.getElementById("hobo-count").innerHTML = numeral(numHobos).format('0.0a');
+  document.getElementById("hobo-count").innerHTML = abbreviateNumber(numHobos, 2);
+  document.getElementById("hobos-ps").innerHTML = abbreviateNumber(HobosPerSecond, 2);
+  //$('#hobos-ps').text(HobosPerSecond);
+
+  displayUpgrades();
+
+  // Update current prices
+  //$('#buy-recruiter').text('Order from Azamon - ' + RecruiterCost);
+  document.getElementById("buy-azamon").innerHTML = abbreviateNumber(RecruiterCost);
+  document.getElementById("buy-chef").innerHTML = abbreviateNumber(ShackCost);
+  document.getElementById("buy-furnace").innerHTML = abbreviateNumber(FurnaceCost);
+  document.getElementById("buy-hallway").innerHTML = abbreviateNumber(HallwayCost);
+  document.getElementById("buy-geothermal").innerHTML = abbreviateNumber(GeothermalCost);
+  document.getElementById("buy-satellite").innerHTML = abbreviateNumber(SatelliteCost);
+  document.getElementById("buy-frankencorn").innerHTML = abbreviateNumber(FrankenCost);
+  document.getElementById("buy-stone").innerHTML = abbreviateNumber(StoneCost);
+  document.getElementById("buy-copia").innerHTML = abbreviateNumber(CopiaCost);
+  document.getElementById("buy-favor").innerHTML = abbreviateNumber(favorCost);
+
+
+  // Enable/disable the upgrades based on amount of Hobos
+  $('#order-pop').toggleClass('disabled', RecruiterCost > numHobos);
+  $('#pop-chefs').toggleClass('disabled', ShackCost > numHobos);
+  $('#pop-furnace').toggleClass('disabled', FurnaceCost > numHobos);
+  $('#micro-hall').toggleClass('disabled', HallwayCost > numHobos);
+  $('#geothermal-pop').toggleClass('disabled', GeothermalCost > numHobos);
+  $('#pop-satellite').toggleClass('disabled', SatelliteCost > numHobos);
+  $('#franken-corn').toggleClass('disabled', FrankenCost > numHobos);
+  $('#pop-stone').toggleClass('disabled', StoneCost > numHobos);
+  $('#popcornucopia').toggleClass('disabled', CopiaCost > numHobos);
+  $('#eldergod').toggleClass('disabled', favorCost > numHobos);
+
+  $('#recruiter-count').text(numRecruiters);
+  $('#shack-count').text(numShacks);
+  $('#furnace-count').text(numFurnaces);
+  $('#hallway-count').text(numHallways);
+  $('#geo-count').text(numGeothermals);
+  $('#satellite-count').text(numSatellites);
+  $('#franken-count').text(numFrankens);
+  $('#stone-count').text(numStones);
+  $('#copia-count').text(numCopias);
+  $('#favor-count').text( prettify((numFavor * 100)) + '%' );
+  $('#azamon-count').text(azamonspots*azamonStatus);
+
+
+}
+
+//Recruitment bar function
+function updateProgress() {
+  progress += 10;
+  if (progress > 100) {
+    numHobos += azamonspots*azamonStatus; 
+    progress = 0;
+    calcWidget();
+  }
+  $('#pbar').css('width', progress + '%').attr('aria-valuenow', progress);
+  $('#pbar').text(progress + '%')
+}
+
+// Run UI update code every 10ms
+window.setInterval(function() {
+
+  numHobos += HobosPerSecond;
+	
+  displayUpgrades();
+  updateProgress();
+  updateScreen();
+}, 1000);
+
+});//]]> 
+
+</script>
+
+  
+</head>
+
+<body>
+  <div id="container">
+
+<div id="upgradecontainer">
+    
+    <table id="buytable">
+    <th>UPGRADES:</th>
+      <tr>
+        <td>
+        <div class ="buyable" id="order-pop">
+        <img src="http://oi66.tinypic.com/xnytjc.jpg" class="upgimgs">
+        <b>Order from Azamon - </b><span id="buy-azamon"></span>
+       <br>
+       Order some popcorn online. 
+       <br>It will take some time to get delivered, though.
+       </div>
+        </td>
+      </tr>
+
+      
+      <tr>
+        <td> 
+        <div class="buyable" id="pop-chefs">
+        <img src="http://plainicon.com/dboard/userprod/2805_fce53/prod_thumb/plainicon.com-45776-256px.png" class="upgimgs">
+        <b>Popcorn Chefs - </b><b id="buy-chef"></b><br>
+        Hire Michelin 3-star chefs to cook popcorn for you.
+        </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="pop-furnace">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/199285-200.png" class="upgimgs">
+            <b>Popcorn Furnace - </b><b id="buy-furnace"></b><br>
+            Heavy duty popper for industrial amounts of popcorn.
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="micro-hall">
+            <img src="http://icons.iconarchive.com/icons/icons8/ios7/256/Household-Microwave-icon.png" class="upgimgs">
+            <b>Microwave Hallway - </b><b id="buy-hallway"></b><br>
+            Hallway with microwave emitters for ludicrous amounts of                             popcorn. <br>
+            Probably not a good idea to walk through one.
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="geothermal-pop">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/122491-200.png" class="upgimgs">
+            <b>Geothermal Popper - </b><b id="buy-geothermal"></b><br>
+             Harnessing the power of Earth's molten core for preposterous amounts of                     popcorn.
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="pop-satellite">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/FP_Satellite_icon.svg/1024px-FP_Satellite_icon.svg.png" class="upgimgs">
+            <b>Icornus Satellite - </b><b id="buy-satellite"></b><br>
+             Massive satellites filled with corn. By orbiting the Sun they use its immense                heat for reckless amounts of popcorn. 
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="franken-corn">
+            <img src="https://maxcdn.icons8.com/Share/icon/Food//corn1600.png" class="upgimgs">
+            <b>Frankencorn - </b><b id="buy-frankencorn"></b><br>
+             With genetic engineering, our scientists have created a breed of corn that grows already popped, thus eliminating the need of a popper.
+          </div>
+        </td>
+      </tr>
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="pop-stone">
+            <img src="https://d30y9cdsu7xlg0.cloudfront.net/png/45050-200.png" class="upgimgs">
+            <b>Popcorner's Stone - </b><b id="buy-stone"></b><br>
+             Our most skilled Alchemists have discovered a process of transmuting mundane minerals into popcorn.
+          </div>
+        </td>
+      </tr>
+      
+      
+      
+      <tr>
+        <td> 
+          <div class="buyable" id="popcornucopia">
+            <img src="http://oi65.tinypic.com/2ufezj7.jpg" class="upgimgs">
+            <b>Popcornucopia - </b><b id="buy-copia"></b><br>
+             Our most powerful wizards have invented an artifact that connects directly to
+             the elemental plane of popcorn.
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="tally">
+<h3>Total:</h3> 
+Azamon orders: <span id="recruiter-count">0</span>
+<br>
+Popcorn Chefs: <span id="shack-count">0</span>
+<br>
+Popcorn Furnaces: <span id="furnace-count">0</span>
+<br>
+Microwave Hallways: <span id="hallway-count">0</span>
+<br>
+Geothermal Poppers: <span id="geo-count">0</span>
+<br>
+Icornus Satellites: <span id="satellite-count">0</span>
+<br>
+Frankencorn plantations: <span id="franken-count">0</span>
+<br>
+Popcorner's Stones: <span id="stone-count">0</span>
+<br>
+Popcornucopias: <span id="copia-count">0</span>
+<br>
+Favor: <span id="favor-count">0</span>
+<br>
+<button id="save">Save</button>
+<button id="load">
+Load
+</button>
+</div>
+  <div id ="mainbox">
+  <div class="buyable" id="eldergod">
+            <img src="http://oi65.tinypic.com/4rb1ow.jpg" class="upgimgs">
+            <b>Where no man has popped before - </b><b id="buy-favor"></b> <br>
+             Your untiring pursuit for popcorn has caught the attention of the elder cosmic god of popcorn - Nicolaus Popcornicus. He demands tribute of all of your popcorn in return for his eternal favor
+          </div>
+  
+  <div id="popper">
+  
+  
+  <div class="btn btn-success btn-lg" id="recruit-hobo"><img src="http://oi68.tinypic.com/i6zhq8.jpg" style="width: 100px; margin: auto;"></div>
+    
+      </div><h1>Popcorn: <span id="hobo-count">0</span></h1>
+    <h2>Pop p/s: <span id="hobos-ps">0</span></h2>
+  <div id="sneaky" style="display:none">
+  <span id="test">
+<img src="http://oi63.tinypic.com/27y30py.jpg" style="width:250px; display: block;
+    margin:auto;">
+  <div class="progress" style="margin-top: 15px;  margin-right: 50px; margin-left: 50px; height: 30px">
+    <div id="pbar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+</div>
+<div class="center" style="text-align: center;">
+
+<span>Azamon orders: In Transit!</span>
+<br>Total popcorn inbound: <b id="azamon-count"></b>
+</div>
+</span>
+ </div>
+  </div>
+
+
+
+  
+  
+</div>
+
+
+
+
+
+
+  
+</body>
+
+</html>
